@@ -1,11 +1,11 @@
 import {module, test} from 'qunit';
-import {visit, fillIn, triggerKeyEvent, pauseTest} from '@ember/test-helpers';
+import {visit, fillIn, triggerKeyEvent} from '@ember/test-helpers';
 import {setupApplicationTest} from 'ember-qunit';
 
 module('Acceptance | create item', function (hooks) {
     setupApplicationTest(hooks);
 
-    hooks.beforeEach(function(assert) {
+    hooks.beforeEach(function (assert) {
         window.localStorage.clear();
     });
 
@@ -13,6 +13,7 @@ module('Acceptance | create item', function (hooks) {
         await visit('/');
 
         assert.equal($('section#main').length, 0);
+        assert.equal($('ul#todo-list li').length, 0);
     });
 
     test('When the first item is created, the list appears', async function (assert) {
@@ -20,12 +21,14 @@ module('Acceptance | create item', function (hooks) {
 
         await visit('/');
 
+        assert.equal($('section#main').length, 0);
         assert.equal($('ul#todo-list li').length, 0);
 
         await fillIn('input#new-todo', itemTitle);
         await triggerKeyEvent('input#new-todo', "keydown", 13);
         await triggerKeyEvent('input#new-todo', "keyup", 13);
 
+        assert.equal($('section#main').length, 1);
         assert.equal($('ul#todo-list li').length, 1);
         assert.equal($($('ul#todo-list li').get(0)).find('label').text(), itemTitle);
     });
@@ -42,6 +45,7 @@ module('Acceptance | create item', function (hooks) {
 
         await visit('/');
 
+        assert.equal($('section#main').length, 1);
         assert.equal($('ul#todo-list li').length, 2);
 
         await fillIn('input#new-todo', item3Title);
@@ -49,6 +53,8 @@ module('Acceptance | create item', function (hooks) {
         await triggerKeyEvent('input#new-todo', "keyup", 13);
 
         assert.equal($('ul#todo-list li').length, 3);
+        assert.equal($($('ul#todo-list li').get(0)).find('label').text(), item1.title);
+        assert.equal($($('ul#todo-list li').get(1)).find('label').text(), item2.title);
         assert.equal($($('ul#todo-list li').get(2)).find('label').text(), item3Title);
     });
 });
