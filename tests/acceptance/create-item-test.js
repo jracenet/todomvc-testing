@@ -14,6 +14,7 @@ module('Acceptance | create item', function (hooks) {
 
         assert.equal($('section#main').length, 0);
         assert.equal($('ul#todo-list li').length, 0);
+        assert.equal(JSON.parse(window.localStorage.getItem("todos")), null);
     });
 
     test('When the first item is created, the list appears', async function (assert) {
@@ -31,7 +32,8 @@ module('Acceptance | create item', function (hooks) {
         assert.equal($('section#main').length, 1);
         assert.equal($('ul#todo-list li').length, 1);
         assert.equal($($('ul#todo-list li').get(0)).find('label').text(), itemTitle);
-        assert.equal($('span#todo-count strong').text(), '1')
+        assert.equal($('span#todo-count strong').text(), '1');
+        assert.equal(JSON.parse(window.localStorage.getItem('todos')).length, 1);
     });
 
     test('When a new item is created, it appears at the bottom of the list', async function (assert) {
@@ -58,6 +60,7 @@ module('Acceptance | create item', function (hooks) {
         assert.equal($($('ul#todo-list li').get(0)).find('label').text(), item1.title);
         assert.equal($($('ul#todo-list li').get(1)).find('label').text(), item2.title);
         assert.equal($($('ul#todo-list li').get(2)).find('label').text(), item3Title);
-        assert.equal($('span#todo-count strong').text(), '3')
+        assert.equal($('span#todo-count strong').text(), '3');
+        assert.equal(JSON.parse(window.localStorage.getItem('todos')).length, 3);
     });
 });
