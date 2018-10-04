@@ -31,6 +31,7 @@ module('Acceptance | create item', function (hooks) {
         assert.equal($('section#main').length, 1);
         assert.equal($('ul#todo-list li').length, 1);
         assert.equal($($('ul#todo-list li').get(0)).find('label').text(), itemTitle);
+        assert.equal($('span#todo-count strong').text(), '1')
     });
 
     test('When a new item is created, it appears at the bottom of the list', async function (assert) {
@@ -47,6 +48,7 @@ module('Acceptance | create item', function (hooks) {
 
         assert.equal($('section#main').length, 1);
         assert.equal($('ul#todo-list li').length, 2);
+        assert.equal($('span#todo-count strong').text(), '2')
 
         await fillIn('input#new-todo', item3Title);
         await triggerKeyEvent('input#new-todo', "keydown", 13);
@@ -56,5 +58,6 @@ module('Acceptance | create item', function (hooks) {
         assert.equal($($('ul#todo-list li').get(0)).find('label').text(), item1.title);
         assert.equal($($('ul#todo-list li').get(1)).find('label').text(), item2.title);
         assert.equal($($('ul#todo-list li').get(2)).find('label').text(), item3Title);
+        assert.equal($('span#todo-count strong').text(), '3')
     });
 });
